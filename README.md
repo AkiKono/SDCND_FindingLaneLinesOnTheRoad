@@ -9,9 +9,9 @@
 **Finding Lane Lines on the Road**
 
 The goals / steps of this written report
-1. Describe image processing algorithm
-2. Identify any shortcomings
-3. Suggest possible improvements
+* Describe image processing algorithm
+* Identify any shortcomings
+* Suggest possible improvements
 
 [//]: # (Image References)
 
