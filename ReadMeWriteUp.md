@@ -1,42 +1,36 @@
-#**Finding Lane Lines on the Road** 
+#**Finding Lane Lines on the Road**
 
-##Writeup Template
+##This project is part of Self-Driving Car Engineering Nano Degree Program from Udacity.
 
-###You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
+###The objective of this project is to find lane lines from videos showing driving on a typical U.S. freeway during daytime with no traffic.
 
 ---
 
 **Finding Lane Lines on the Road**
 
-The goals / steps of this project are the following:
-* Make a pipeline that finds lane lines on the road
-* Reflect on your work in a written report
-
-The goals / steps of the written report
-* Describe the pipeline
-* Identify any shortcomings
-* Suggest possible improvements
+The goals / steps of this written report
+1. Describe image processing algorithm
+2. Identify any shortcomings
+3. Suggest possible improvements
 
 [//]: # (Image References)
 
-[image1]: ./Test_images/whiteCarLaneSwitch.jpgresult.jpg "Result"
-[image2]: ./Test_images/whiteCarLaneSwitch.jpgyellow.jpg "YellowMask"
-[image3]: ./Test_images/whiteCarLaneSwitch.jpghighlight.jpg "Highlight"
-[image4]: ./Test_images/whiteCarLaneSwitch.jpggray.jpg "Grayscale"
-[image5]: ./Test_images/whiteCarLaneSwitch.jpgblur_gray.jpg "BlurGrayscale"
-[image6]: ./Test_images/whiteCarLaneSwitch.jpgedges.jpg "Edges"
-[image7]: ./Test_images/whiteCarLaneSwitch.jpgregi_of_int.jpg "RegionOfInterest"
-[image8]: ./Test_images/whiteCarLaneSwitch.jpgmasked_edges.jpg "MaskedEdges"
-[image9]: ./Test_images/whiteCarLaneSwitch.jpg "MaskedEdges"
-[image10]: ./Test_images/whiteCarLaneSwitchLines.jpg "HoughTransformLines"
-[image11]: ./Test_images/extra5850msimage.jpg "failure"
+[image1]: ./test_images/whiteCarLaneSwitch.jpgresult.jpg "Result"
+[image2]: ./test_images/whiteCarLaneSwitch.jpgyellow.jpg "YellowMask"
+[image3]: ./test_images/whiteCarLaneSwitch.jpghighlight.jpg "Highlight"
+[image4]: ./test_images/whiteCarLaneSwitch.jpggray.jpg "Grayscale"
+[image5]: ./test_images/whiteCarLaneSwitch.jpgblur_gray.jpg "BlurGrayscale"
+[image6]: ./test_images/whiteCarLaneSwitch.jpgedges.jpg "Edges"
+[image7]: ./test_images/whiteCarLaneSwitch.jpgregi_of_int.jpg "RegionOfInterest"
+[image8]: ./test_images/whiteCarLaneSwitch.jpgmasked_edges.jpg "MaskedEdges"
+[image9]: ./test_images/whiteCarLaneSwitch.jpg "MaskedEdges"
+[image10]: ./test_images/whiteCarLaneSwitchLines.jpg "HoughTransformLines"
+[image11]: ./test_images/extra5850msimage.jpg "failure"
 
 
 ---
 
-### Reflection
-
-###1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
+### 1. Describe Image Processing Algorithm
 
 My pipeline consisted of 7 steps. () are the openCV functions that are used.
 * mask yellow color pixels. (`cv2.inRange`)
@@ -92,25 +86,25 @@ Next, group them by negative slope lines and positive slope lines. Negative slop
 For some images in the challenge.mp4 movie, my pipeline does not work as shown below.
 ![alt text][image11]
 
-My pipeline could not find lane lines due to the shadow of the trees and the color difference on the road.
+My pipeline could not find lane lines due to the edges created by the shadow of the trees and the color difference of the road.
 
-In the same way, it may not work when there are faded lane lines, unnecessary old lanes remained on the road, or cars in front occupying some portion of the lane lines.
+In the same way, it is possible that this program cannot detect lane lines properly when there are faded lane lines, unnecessary old lane lines remained on the road, or cars in front occupying some portion of the lane lines.
 
 Also, weather such as rain, sand storm, snow, and fog, also affect my pipeline results. The use of wiper during such weather condition might affect the results if the camera is place inside the windshield.
 
 Poor lighting conditions such as head lights from oncoming cars during the night, darkness due to no street lights, backlight evening, or driving inside a tunnel definitely affect my pipeline results. Especially Canny Edge Detection may not work properly since the intensity of the lane lines mark could be so different from ones from during daytime.
 
-Another shortcoming could be that it only tries to detect straight lines. Curves are not included. Also, it is possible that lane lines are out of Region of Interests when the lane lines are curved.
+Another shortcoming could be that it only tries to detect straight lines as it uses Hough Transform Line Detection. It is not programed to find curves. Also, it is possible that lane lines are out of Region of Interests when the lane lines are acutely curved.
 
-The most importantly, it takes a lot of time to tune the parameters. Color mask RGB value ranges, Canny Edge Detection thresholds, Hough Transform parameters, all of them were fine tuned for given particular test images only. For a practical application, however, it has to detect lane lines in real time in any condition. This approach simply takes too much time and requires constant parameter tuning while driving. Thus, we need a faster and more robust automatic lane lines detection system.
+The most importantly, it takes a lot of time to tune the parameters to detect line properly. Color mask RGB value ranges, Canny Edge Detection thresholds, Hough Transform parameters, all of them were fine tuned for given particular test images only. For a practical application, however, it has to detect lane lines in real time in any condition. This approach simply takes too much time and requires constant parameter tuning while driving. Thus, we need a faster and more robust automatic lane lines detection system for practical uses.
 
 ###3. Suggest possible improvements to your pipeline
 
 Deep learning is necessary for a faster and more robust automatic lane lines detection, and I believe that is why we are going to learn it next.
 
-Besides deep learning, however, a possible improvement on my pipeline would be to apply lane tracking. Since lane lines on the roads are most often continuous, lane lines can be tracked in consecutive video frames. By filtering out end points of lines detected by Hough Transform that are far from the previous lane lines location, my pipeline can be improved
+Besides deep learning, however, a possible improvement on my pipeline would be to apply lane tracking. Since lane lines on the roads are most often continuous, lane lines can be tracked in consecutive video frames. Filtering out end points of lines detected by Hough Transform that are far from the previous lane lines location can improve my pipeline results.
 
-Another easy possible improvement could be to delete lines with slopes that are close to zero in the draw_lines function.
+Another easy possible improvement could be to delete Hough lines with slopes that are close to zero in the draw_lines function.
 
 Another possible improvement would be to use lane width. In the United States, U.S. Department of Transportation specifies lane width for the different type of roadways.
 
@@ -123,7 +117,8 @@ Another possible improvement would be to use lane width. In the United States, U
 | Local | 9-12 | 9-12 |
 (https://safety.fhwa.dot.gov/geometric/pubs/mitigationstrategies/chapter3/3_lanewidth.cfm)
 
-For freeway, the lane width is required to be 12 feet and constant, which means the spacing between detected left and right lane lines at the bottom of the image should also be nearly constant. By filtering out lane line end points at the bottom of the image that are far apart from an expected range, my pipeline can possibly be improved. Or, simply add lane width checking after detecting the lane lines.
+For freeway, the lane width is set to be 12 feet. Adding lane width geometry checking after detecting the lane lines will improve the accuracy of my pipeline although there might be many exceptions that lane width is not  12 feet. To measure the lane width, I need depth information from stereo image (`cv2.StereoBM_create`) or from _"3-D Depth Reconstruction from a Single Still Image."_
+(http://ai.stanford.edu/~ang/papers/ijcv07-monocular3dreconstruction.pdf)
 
 Another potential improvement could be to use HLS color mask. I used RGB color code to find yellow color. However, HLS color code can detect light color, like white and yellow, more easily because it parameterize colors by lightness.
 
